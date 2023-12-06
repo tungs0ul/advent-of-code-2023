@@ -8,23 +8,23 @@ fn helper(filepath: &str) -> Vec<(u32, u32, u32)> {
         .unwrap()
         .lines()
         .map(|line| {
-            let line = line.split(":").last().unwrap().replace(";", ",");
-            let mut red = 0;
-            let mut green = 0;
-            let mut blue = 0;
-            for str in line.split(",") {
-                match str
-                    .split(" ")
-                    .filter(|x| !x.is_empty())
-                    .collect::<Vec<&str>>()[..]
-                {
-                    [x, "red"] => red = red.max(x.parse::<u32>().unwrap()),
-                    [x, "green"] => green = green.max(x.parse::<u32>().unwrap()),
-                    [x, "blue"] => blue = blue.max(x.parse::<u32>().unwrap()),
-                    _ => unreachable!("Invalid input"),
-                }
-            }
-            (red, green, blue)
+            line.split(":")
+                .last()
+                .unwrap()
+                .replace(";", ",")
+                .split(",")
+                .fold((0, 0, 0), |(red, green, blue), str| {
+                    match str
+                        .split(" ")
+                        .filter(|x| !x.is_empty())
+                        .collect::<Vec<&str>>()[..]
+                    {
+                        [x, "red"] => (red.max(x.parse::<u32>().unwrap()), green, blue),
+                        [x, "green"] => (red, green.max(x.parse::<u32>().unwrap()), blue),
+                        [x, "blue"] => (red, green, blue.max(x.parse::<u32>().unwrap())),
+                        _ => unreachable!("Invalid input"),
+                    }
+                })
         })
         .collect()
 }
