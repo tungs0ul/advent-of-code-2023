@@ -3,7 +3,7 @@ fn main() {
     println!("Part 2: {}", p2("inputs/day2/input"));
 }
 
-fn helper(filepath: &str) -> Vec<(i32, i32, i32)> {
+fn helper(filepath: &str) -> Vec<(u32, u32, u32)> {
     std::fs::read_to_string(filepath)
         .unwrap()
         .lines()
@@ -18,9 +18,9 @@ fn helper(filepath: &str) -> Vec<(i32, i32, i32)> {
                     .filter(|x| !x.is_empty())
                     .collect::<Vec<&str>>()[..]
                 {
-                    [x, "red"] => red = red.max(x.parse::<i32>().unwrap()),
-                    [x, "green"] => green = green.max(x.parse::<i32>().unwrap()),
-                    [x, "blue"] => blue = blue.max(x.parse::<i32>().unwrap()),
+                    [x, "red"] => red = red.max(x.parse::<u32>().unwrap()),
+                    [x, "green"] => green = green.max(x.parse::<u32>().unwrap()),
+                    [x, "blue"] => blue = blue.max(x.parse::<u32>().unwrap()),
                     _ => unreachable!("Invalid input"),
                 }
             }
@@ -43,7 +43,7 @@ fn p1(filepath: &str) -> u32 {
         .sum()
 }
 
-fn p2(filepath: &str) -> i32 {
+fn p2(filepath: &str) -> u32 {
     helper(filepath)
         .into_iter()
         .map(|(red, green, blue)| red * green * blue)
