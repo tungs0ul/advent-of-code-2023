@@ -54,25 +54,26 @@ fn p1(filepath: &str) -> u32 {
 }
 
 fn p2(filepath: &str) -> u32 {
-    let mut x: Vec<u32> = vec![];
     helper(filepath)
         .into_iter()
         .enumerate()
-        .for_each(|(idx, num)| {
-            if x.len() < idx + 1 {
-                x.push(0);
+        .fold(vec![], |mut acc, (idx, num)| {
+            if acc.len() < idx + 1 {
+                acc.push(0);
             }
-            x[idx] += 1;
-            for _ in 0..x[idx] {
+            acc[idx] += 1;
+            for _ in 0..acc[idx] {
                 for i in 0..num {
-                    if x.len() < idx + i as usize + 2 {
-                        x.push(0);
+                    if acc.len() < idx + i as usize + 2 {
+                        acc.push(0);
                     }
-                    x[idx + i as usize + 1] += 1;
+                    acc[idx + i as usize + 1] += 1;
                 }
             }
-        });
-    x.into_iter().sum()
+            acc
+        })
+        .into_iter()
+        .sum()
 }
 
 #[cfg(test)]
